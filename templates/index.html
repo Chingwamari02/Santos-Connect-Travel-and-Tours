@@ -1,0 +1,49 @@
+
+<!doctype html><html lang="en"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Santos Connect | Life to be Lived</title>
+<meta name="description" content="Travel, study, stay and relocate with Santos Connect Travel & Tour.">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head><body>
+<header class="top"><div class="wrap nav">
+<a class="brand" href="#home"><img src="{{ url_for('static',filename='images/logo.jpg') }}"><span><b>Santos Connect</b><small>Travel & Tour (Pvt) Limited</small></span></a>
+<button id="menu">☰</button><nav id="nav"><a href="#home">Home</a><a href="#services">Services</a><a href="#destinations">Destinations</a><a href="#offers">Offers</a><a href="#stories">Stories</a><a href="#contact">Contact</a></nav>
+</div></header>
+
+<section class="hero" id="home"><div class="wrap hero-grid">
+<div><span class="kicker">TRAVEL • STUDY • STAY • RELOCATE</span><h1>Your dreams.<br><span>Our expertise.</span><br>Endless possibilities.</h1>
+<p>We connect you to a better future with reliable travel, visa, study, hotel and relocation assistance.</p>
+<div class="actions"><a class="btn orange" href="#contact">Plan My Journey</a><a class="btn outline" href="#services">Explore Services</a></div>
+<div class="trust"><span>✓ Trusted assistance</span><span>✓ Affordable packages</span><span>✓ Global opportunities</span></div></div>
+<div class="hero-art"><img src="{{ url_for('static',filename='images/travel-relocate.jpg') }}"></div>
+</div></section>
+
+<section class="stories wrap" id="stories"><div class="section-top"><div><span class="eyebrow">FRESH FROM SANTOS CONNECT</span><h2>Stories & Updates</h2><p>Offers and announcements stay visible for 25 hours.</p></div><a class="linkbtn" href="#contact">Get an Offer</a></div>
+{% if stories %}<div class="story-row">{% for s in stories %}
+<button class="story" data-id="{{s['id']}}" data-type="{{s['media_type']}}" data-file="{{url_for('static',filename='uploads/'+s['filename'])}}" data-caption="{{s['caption']}}">
+<span>{% if s['media_type']=='image' %}<img src="{{url_for('static',filename='uploads/'+s['filename'])}}">{% else %}▶{% endif %}</span><b>{{s['caption'] or 'Santos Connect'}}</b><small>Expires in 25h</small></button>
+{% endfor %}</div>{% else %}<div class="empty">No fresh stories right now — follow us for the next update.</div>{% endif %}
+</section>
+
+<section class="promo" id="offers"><div class="wrap promo-grid"><div><span class="eyebrow">DUBAI EXPERIENCE</span><h2>Experience Dubai<br><span>like never before!</span></h2><p>Discover iconic attractions, desert adventures, hotel stays, flight bookings, airport transfers and Dubai visa assistance.</p>
+<div class="chips"><span>30 DAYS TOURIST VISA</span><span>60 DAYS TOURIST VISA</span><span>FAST PROCESSING</span></div><a class="btn orange" href="https://wa.me/263773905571?text=Hello%20Santos%20Connect%2C%20I%20want%20to%20plan%20a%20Dubai%20trip." target="_blank">Plan Dubai on WhatsApp</a></div>
+<img src="{{url_for('static',filename='images/dubai-experience.jpg')}}"></div></section>
+
+<section class="section wrap" id="services"><span class="eyebrow dark">OUR SERVICES</span><h2>One-stop support for your travel needs</h2><p class="intro">From your first enquiry to the start of your journey, we help make the process simple and smooth.</p>
+<div class="cards">
+{% for icon,title,text in [('✈️','Flight Tickets','Domestic & international flight bookings.'),('🛂','Visa Services','Tourist, visit, business, work and study visa assistance.'),('🏨','Hotel Reservations','Comfortable stays anywhere in the world.'),('🧳','Tour Packages','Customised holiday packages for memorable trips.'),('🚐','Airport Transfers','Reliable airport pickup and drop-off arrangements.'),('🛡️','Travel Insurance','Added protection for your international journey.'),('🎓','Study Abroad','Guidance for UAE, China, Poland and India study routes.'),('🌍','Relocation to Dubai','Visa, flights, accommodation, airport pickup and job-search support.')]}
+<article class="card"><i>{{icon}}</i><h3>{{title}}</h3><p>{{text}}</p><a href="#contact">Enquire →</a></article>{% endfor %}</div></section>
+
+<section class="study"><div class="wrap study-grid"><img src="{{url_for('static',filename='images/study-abroad.jpg')}}"><div><span class="eyebrow">STUDY ABROAD</span><h2>Build your future beyond borders.</h2><p>Explore study opportunities in <b>UAE, China, Poland and India</b> with support for university selection, admissions, scholarships, visa documentation, accommodation and pre-departure planning.</p><div class="countries"><span>🇦🇪 UAE</span><span>🇨🇳 China</span><span>🇵🇱 Poland</span><span>🇮🇳 India</span></div><a class="btn blue" href="#contact">Talk to a Study Advisor</a></div></div></section>
+
+<section class="relocate"><div class="wrap"><span class="eyebrow">WHY CHOOSE SANTOS CONNECT?</span><h2>Move with confidence.</h2><div class="why"><div><b>✓</b><h3>Reliable & Trusted</h3><p>Clear guidance and practical assistance.</p></div><div><b>★</b><h3>Expert Guidance</h3><p>Support built around your travel goal.</p></div><div><b>💰</b><h3>Affordable Packages</h3><p>Options designed for different needs.</p></div><div><b>🌍</b><h3>Global Network</h3><p>Travel, study and relocation destinations.</p></div><div><b>☎</b><h3>Client Support</h3><p>We're here when you need assistance.</p></div></div></div></section>
+
+<section class="contact wrap" id="contact"><div class="contact-card"><div><span class="eyebrow">LET'S CONNECT</span><h2>Your journey starts here.</h2><p>Tell us where you want to go, study, stay or relocate.</p></div><div class="contacts">
+<a href="tel:+263773905571">📞 +263 773 905 571</a><a href="tel:+263717671379">📞 +263 717 671 379</a><a href="tel:+971529878571">📱 +971 52 987 8571</a><a class="wa" target="_blank" href="https://wa.me/263773905571">💬 WhatsApp Us</a></div></div></section>
+
+<footer><div class="wrap"><b>Santos Connect Travel & Tour (Pvt) Limited</b><span>Life to be lived · © <span id="year"></span></span></div></footer>
+
+<div class="viewer" id="viewer"><button id="close">×</button><div id="view"></div></div>
+<script>const STORIES={{stories|map(attribute='id')|list|tojson}};</script>
+<script src="{{url_for('static',filename='js/app.js')}}"></script>
+</body></html>
