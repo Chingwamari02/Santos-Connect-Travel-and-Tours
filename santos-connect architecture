@@ -1,0 +1,50 @@
+Santos-Connect-Travel-and-Tours-main/
+│
+├── app.py
+├── database.py
+├── requirements.txt
+│
+├── database/
+│   └── santos_connect.db
+│
+├── static/
+│   ├── css/
+│   │   ├── style.css
+│   │   └── admin.css
+│   │
+│   ├── js/
+│   │   ├── app.js
+│   │   └── admin.js
+│   │
+│   ├── images/
+│   │   ├── logo.jpg
+│   │   ├── travel-relocate.jpg
+│   │   ├── dubai-experience.jpg
+│   │   └── study-abroad.jpg
+│   │
+│   └── uploads/
+│       └── stories/
+│
+└── templates/
+    │
+    ├── base.html
+    ├── index.html
+    ├── services.html
+    ├── destinations.html
+    ├── study.html
+    ├── offers.html
+    ├── about.html
+    ├── contact.html
+    │
+    └── admin/
+        ├── login.html
+        ├── dashboard.html
+        ├── stories.html
+        ├── offers.html
+        ├── services.html
+        ├── destinations.html
+        ├── study.html
+        ├── content.html
+        ├── messages.html
+        ├── customers.html
+        └── settings.html
