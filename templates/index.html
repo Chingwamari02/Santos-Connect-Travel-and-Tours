@@ -1,0 +1,1119 @@
+{% extends "base.html" %}
+
+{% block title %}Santos Connect Travel & Tour | Life to be Lived{% endblock %}
+
+{% block content %}
+
+<!-- =========================================================
+     SANTOS CONNECT HOMEPAGE
+     Landscape / Desktop-first layout
+     NOTE: Header/navigation remain in base.html.
+     ========================================================= -->
+
+<style>
+    /* Homepage-only layout protection.
+       This keeps the homepage organized even if the global CSS is different. */
+
+    .sc-home {
+        width: 100%;
+        overflow: hidden;
+        background: #fff;
+    }
+
+    .sc-home *,
+    .sc-home *::before,
+    .sc-home *::after {
+        box-sizing: border-box;
+    }
+
+    .sc-wrap {
+        width: min(1180px, calc(100% - 48px));
+        margin: 0 auto;
+    }
+
+    .sc-section {
+        padding: 76px 0;
+    }
+
+    .sc-eyebrow {
+        display: inline-block;
+        margin-bottom: 12px;
+        font-size: 12px;
+        font-weight: 800;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        color: #f47b20;
+    }
+
+    .sc-section-title {
+        margin: 0 0 12px;
+        font-size: clamp(30px, 3vw, 44px);
+        line-height: 1.1;
+        color: #08244a;
+    }
+
+    .sc-section-intro {
+        max-width: 720px;
+        margin: 0 auto 38px;
+        color: #5c6878;
+        line-height: 1.7;
+    }
+
+    /* HERO */
+    .sc-hero {
+        min-height: 600px;
+        display: flex;
+        align-items: center;
+        background: linear-gradient(135deg, #f5f9ff 0%, #ffffff 62%);
+    }
+
+    .sc-hero-grid {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) minmax(420px, .95fr);
+        gap: 58px;
+        align-items: center;
+    }
+
+    .sc-kicker {
+        display: inline-block;
+        margin-bottom: 18px;
+        font-size: 13px;
+        font-weight: 800;
+        letter-spacing: 2px;
+        color: #f47b20;
+    }
+
+    .sc-hero h1 {
+        margin: 0;
+        max-width: 700px;
+        font-size: clamp(42px, 5vw, 68px);
+        line-height: .98;
+        letter-spacing: -2px;
+        color: #08244a;
+    }
+
+    .sc-hero h1 span {
+        color: #f47b20;
+    }
+
+    .sc-hero p {
+        max-width: 650px;
+        margin: 24px 0 28px;
+        font-size: 18px;
+        line-height: 1.7;
+        color: #526071;
+    }
+
+    .sc-actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 14px;
+        margin-bottom: 28px;
+    }
+
+    .sc-btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 48px;
+        padding: 0 24px;
+        border-radius: 8px;
+        text-decoration: none;
+        font-weight: 800;
+        transition: transform .2s ease, box-shadow .2s ease;
+    }
+
+    .sc-btn:hover {
+        transform: translateY(-2px);
+    }
+
+    .sc-btn-orange {
+        color: #fff;
+        background: #f47b20;
+        box-shadow: 0 10px 24px rgba(244,123,32,.22);
+    }
+
+    .sc-btn-outline {
+        color: #08244a;
+        background: #fff;
+        border: 2px solid #08244a;
+    }
+
+    .sc-trust {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px 24px;
+        font-size: 14px;
+        font-weight: 700;
+        color: #334155;
+    }
+
+    .sc-hero-image {
+        position: relative;
+        min-height: 450px;
+        overflow: hidden;
+        border-radius: 22px;
+        box-shadow: 0 24px 60px rgba(8,36,74,.18);
+        background: #e9eef5;
+    }
+
+    .sc-hero-image img {
+        width: 100%;
+        height: 100%;
+        min-height: 450px;
+        display: block;
+        object-fit: cover;
+    }
+
+    /* STORIES */
+    .sc-stories {
+        background: #fff;
+    }
+
+    .sc-story-head {
+        display: flex;
+        align-items: end;
+        justify-content: space-between;
+        gap: 24px;
+        margin-bottom: 28px;
+    }
+
+    .sc-story-head h2 {
+        margin: 0 0 8px;
+        color: #08244a;
+    }
+
+    .sc-story-head p {
+        margin: 0;
+        color: #64748b;
+    }
+
+    .sc-link {
+        flex: 0 0 auto;
+        color: #f47b20;
+        font-weight: 800;
+        text-decoration: none;
+    }
+
+    .sc-story-row {
+        display: flex;
+        gap: 18px;
+        overflow-x: auto;
+        padding: 4px 2px 14px;
+        scrollbar-width: thin;
+    }
+
+    .sc-story {
+        flex: 0 0 190px;
+        padding: 0;
+        border: 0;
+        background: transparent;
+        text-align: left;
+        cursor: pointer;
+    }
+
+    .sc-story-media {
+        width: 190px;
+        height: 230px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+        border-radius: 16px;
+        background: #0b2c55;
+        box-shadow: 0 10px 24px rgba(8,36,74,.12);
+    }
+
+    .sc-story-media img {
+        width: 100%;
+        height: 100%;
+        display: block;
+        object-fit: cover;
+    }
+
+    .sc-story-video-icon {
+        color: #fff;
+        font-size: 48px;
+    }
+
+    .sc-story b,
+    .sc-story small {
+        display: block;
+    }
+
+    .sc-story b {
+        margin-top: 10px;
+        color: #172033;
+    }
+
+    .sc-story small {
+        margin-top: 5px;
+        color: #7b8796;
+    }
+
+    .sc-empty {
+        padding: 32px;
+        border-radius: 14px;
+        background: #f5f8fc;
+        color: #64748b;
+        text-align: center;
+    }
+
+    /* DUBAI PROMO */
+    .sc-promo {
+        background: #08244a;
+        color: #fff;
+    }
+
+    .sc-promo-grid {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) minmax(420px, .9fr);
+        gap: 56px;
+        align-items: center;
+    }
+
+    .sc-promo h2 {
+        margin: 0 0 16px;
+        font-size: clamp(34px, 4vw, 52px);
+        line-height: 1.08;
+    }
+
+    .sc-promo h2 span {
+        color: #f47b20;
+    }
+
+    .sc-promo p {
+        max-width: 620px;
+        margin: 0 0 24px;
+        color: #d7e2f0;
+        line-height: 1.7;
+    }
+
+    .sc-chips {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-bottom: 26px;
+    }
+
+    .sc-chips span {
+        padding: 9px 13px;
+        border: 1px solid rgba(255,255,255,.2);
+        border-radius: 999px;
+        color: #fff;
+        background: rgba(255,255,255,.08);
+        font-size: 11px;
+        font-weight: 800;
+    }
+
+    .sc-promo-image {
+        overflow: hidden;
+        border-radius: 20px;
+        box-shadow: 0 24px 55px rgba(0,0,0,.25);
+    }
+
+    .sc-promo-image img {
+        width: 100%;
+        height: 390px;
+        display: block;
+        object-fit: cover;
+    }
+
+    /* SERVICES */
+    .sc-services {
+        text-align: center;
+        background: #f7f9fc;
+    }
+
+    .sc-service-grid {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 20px;
+        text-align: left;
+    }
+
+    .sc-service-card {
+        min-height: 220px;
+        padding: 25px;
+        border: 1px solid #e4eaf2;
+        border-radius: 16px;
+        background: #fff;
+        box-shadow: 0 8px 24px rgba(8,36,74,.06);
+        transition: transform .2s ease, box-shadow .2s ease;
+    }
+
+    .sc-service-card:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 16px 32px rgba(8,36,74,.1);
+    }
+
+    .sc-service-icon {
+        display: block;
+        margin-bottom: 14px;
+        font-size: 32px;
+    }
+
+    .sc-service-card h3 {
+        margin: 0 0 9px;
+        color: #08244a;
+        font-size: 19px;
+    }
+
+    .sc-service-card p {
+        margin: 0 0 18px;
+        min-height: 54px;
+        color: #657286;
+        line-height: 1.55;
+        font-size: 14px;
+    }
+
+    .sc-service-card a {
+        color: #f47b20;
+        font-weight: 800;
+        text-decoration: none;
+    }
+
+    .sc-services-action {
+        margin-top: 30px;
+    }
+
+    /* STUDY */
+    .sc-study {
+        background: #fff;
+    }
+
+    .sc-study-grid {
+        display: grid;
+        grid-template-columns: minmax(420px, .9fr) minmax(0, 1fr);
+        gap: 60px;
+        align-items: center;
+    }
+
+    .sc-study-image {
+        overflow: hidden;
+        border-radius: 20px;
+        box-shadow: 0 20px 45px rgba(8,36,74,.15);
+    }
+
+    .sc-study-image img {
+        width: 100%;
+        height: 420px;
+        display: block;
+        object-fit: cover;
+    }
+
+    .sc-study-content h2 {
+        margin: 0 0 16px;
+        font-size: clamp(32px, 3.5vw, 48px);
+        color: #08244a;
+    }
+
+    .sc-study-content p {
+        color: #5d6979;
+        line-height: 1.75;
+    }
+
+    .sc-countries {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin: 24px 0;
+    }
+
+    .sc-countries span {
+        padding: 10px 14px;
+        border-radius: 8px;
+        background: #f1f5f9;
+        color: #243247;
+        font-weight: 700;
+    }
+
+    .sc-btn-blue {
+        color: #fff;
+        background: #08244a;
+    }
+
+    /* WHY CHOOSE US */
+    .sc-why {
+        color: #fff;
+        background: #0b2c55;
+        text-align: center;
+    }
+
+    .sc-why h2 {
+        color: #fff;
+    }
+
+    .sc-why-grid {
+        display: grid;
+        grid-template-columns: repeat(5, minmax(0, 1fr));
+        gap: 16px;
+        margin-top: 34px;
+    }
+
+    .sc-why-card {
+        padding: 24px 16px;
+        border: 1px solid rgba(255,255,255,.12);
+        border-radius: 14px;
+        background: rgba(255,255,255,.06);
+    }
+
+    .sc-why-card > b {
+        display: block;
+        margin-bottom: 12px;
+        font-size: 26px;
+        color: #f47b20;
+    }
+
+    .sc-why-card h3 {
+        margin: 0 0 8px;
+        font-size: 17px;
+    }
+
+    .sc-why-card p {
+        margin: 0;
+        color: #d4dfed;
+        font-size: 13px;
+        line-height: 1.55;
+    }
+
+    /* CONTACT */
+    .sc-contact {
+        background: #fff;
+    }
+
+    .sc-contact-card {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) minmax(360px, .8fr);
+        gap: 50px;
+        align-items: center;
+        padding: 52px;
+        border-radius: 22px;
+        background: #f5f8fc;
+    }
+
+    .sc-contact-card h2 {
+        margin: 0 0 12px;
+        font-size: clamp(32px, 3.5vw, 46px);
+        color: #08244a;
+    }
+
+    .sc-contact-card p {
+        margin: 0;
+        color: #637083;
+        line-height: 1.7;
+    }
+
+    .sc-contact-links {
+        display: grid;
+        gap: 11px;
+    }
+
+    .sc-contact-links a {
+        display: flex;
+        align-items: center;
+        min-height: 48px;
+        padding: 0 16px;
+        border-radius: 8px;
+        background: #fff;
+        color: #08244a;
+        font-weight: 800;
+        text-decoration: none;
+        box-shadow: 0 5px 15px rgba(8,36,74,.06);
+    }
+
+    .sc-contact-links .sc-wa {
+        color: #fff;
+        background: #1db954;
+    }
+
+    /* STORY VIEWER */
+    .sc-viewer {
+        position: fixed;
+        inset: 0;
+        z-index: 9999;
+        display: none;
+        align-items: center;
+        justify-content: center;
+        padding: 25px;
+        background: rgba(0,0,0,.88);
+    }
+
+    .sc-viewer.is-open {
+        display: flex;
+    }
+
+    .sc-viewer-close {
+        position: absolute;
+        top: 18px;
+        right: 24px;
+        width: 46px;
+        height: 46px;
+        border: 0;
+        border-radius: 50%;
+        color: #fff;
+        background: rgba(255,255,255,.14);
+        font-size: 30px;
+        cursor: pointer;
+    }
+
+    .sc-viewer-content {
+        max-width: 900px;
+        max-height: 90vh;
+        text-align: center;
+    }
+
+    .sc-viewer-content img,
+    .sc-viewer-content video {
+        max-width: 100%;
+        max-height: 78vh;
+        border-radius: 12px;
+    }
+
+    .sc-viewer-caption {
+        margin-top: 12px;
+        color: #fff;
+        font-weight: 700;
+    }
+
+    /* TABLET */
+    @media (max-width: 1000px) {
+        .sc-hero-grid,
+        .sc-promo-grid,
+        .sc-study-grid,
+        .sc-contact-card {
+            grid-template-columns: 1fr;
+        }
+
+        .sc-service-grid {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+
+        .sc-why-grid {
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+        }
+
+        .sc-hero-image {
+            min-height: 360px;
+        }
+
+        .sc-hero-image img {
+            min-height: 360px;
+        }
+    }
+
+    /* MOBILE */
+    @media (max-width: 650px) {
+        .sc-wrap {
+            width: min(100% - 28px, 1180px);
+        }
+
+        .sc-section {
+            padding: 52px 0;
+        }
+
+        .sc-hero {
+            min-height: auto;
+            padding: 55px 0;
+        }
+
+        .sc-hero h1 {
+            font-size: 42px;
+        }
+
+        .sc-hero-image {
+            min-height: 280px;
+        }
+
+        .sc-hero-image img {
+            min-height: 280px;
+        }
+
+        .sc-story-head {
+            align-items: flex-start;
+            flex-direction: column;
+        }
+
+        .sc-service-grid,
+        .sc-why-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .sc-study-image img,
+        .sc-promo-image img {
+            height: 300px;
+        }
+
+        .sc-contact-card {
+            padding: 30px 22px;
+        }
+    }
+</style>
+
+
+<div class="sc-home">
+
+    <!-- =====================================================
+         1. HERO
+         ===================================================== -->
+    <section class="sc-hero" id="home">
+        <div class="sc-wrap sc-hero-grid">
+
+            <div>
+                <span class="sc-kicker">TRAVEL • STUDY • STAY • RELOCATE</span>
+
+                <h1>
+                    Your dreams.<br>
+                    <span>Our expertise.</span><br>
+                    Endless possibilities.
+                </h1>
+
+                <p>
+                    We connect you to a better future with reliable travel,
+                    visa, study, hotel and relocation assistance.
+                </p>
+
+                <div class="sc-actions">
+                    <a class="sc-btn sc-btn-orange" href="{{ url_for('contact') }}">
+                        Plan My Journey
+                    </a>
+
+                    <a class="sc-btn sc-btn-outline" href="{{ url_for('services') }}">
+                        Explore Services
+                    </a>
+                </div>
+
+                <div class="sc-trust">
+                    <span>✓ Trusted assistance</span>
+                    <span>✓ Affordable packages</span>
+                    <span>✓ Global opportunities</span>
+                </div>
+            </div>
+
+            <div class="sc-hero-image">
+                <img
+                    src="{{ url_for('static', filename='images/travel-relocate.jpg') }}"
+                    alt="Santos Connect Travel and Tour"
+                    onerror="this.style.display='none';"
+                >
+            </div>
+
+        </div>
+    </section>
+
+
+    <!-- =====================================================
+         2. STORIES
+         ===================================================== -->
+    <section class="sc-section sc-stories" id="stories">
+        <div class="sc-wrap">
+
+            <div class="sc-story-head">
+                <div>
+                    <span class="sc-eyebrow">FRESH FROM SANTOS CONNECT</span>
+                    <h2 class="sc-section-title">Stories &amp; Updates</h2>
+                    <p>Offers and announcements stay visible for 25 hours.</p>
+                </div>
+
+                <a class="sc-link" href="{{ url_for('offers') }}">
+                    View Offers →
+                </a>
+            </div>
+
+            {% if stories %}
+
+            <div class="sc-story-row">
+
+                {% for s in stories %}
+
+                {% set story_file = 'uploads/stories/' + s['filename'] %}
+
+                <button
+                    type="button"
+                    class="sc-story"
+                    data-id="{{ s['id'] }}"
+                    data-type="{{ s['media_type'] }}"
+                    data-file="{{ url_for('static', filename=story_file) }}"
+                    data-caption="{{ s['caption'] or 'Santos Connect' }}"
+                    aria-label="View story: {{ s['caption'] or 'Santos Connect' }}"
+                >
+
+                    <span class="sc-story-media">
+
+                        {% if s['media_type'] == 'image' %}
+
+                        <img
+                            src="{{ url_for('static', filename=story_file) }}"
+                            alt="{{ s['caption'] or 'Santos Connect story' }}"
+                            loading="lazy"
+                        >
+
+                        {% else %}
+
+                        <span class="sc-story-video-icon">▶</span>
+
+                        {% endif %}
+
+                    </span>
+
+                    <b>{{ s['caption'] or 'Santos Connect' }}</b>
+                    <small>Expires in 25h</small>
+
+                </button>
+
+                {% endfor %}
+
+            </div>
+
+            {% else %}
+
+            <div class="sc-empty">
+                No fresh stories right now — check back for the next Santos Connect update.
+            </div>
+
+            {% endif %}
+
+        </div>
+    </section>
+
+
+    <!-- =====================================================
+         3. DUBAI EXPERIENCE
+         ===================================================== -->
+    <section class="sc-section sc-promo" id="offers">
+        <div class="sc-wrap sc-promo-grid">
+
+            <div>
+                <span class="sc-eyebrow">DUBAI EXPERIENCE</span>
+
+                <h2>
+                    Experience Dubai<br>
+                    <span>like never before!</span>
+                </h2>
+
+                <p>
+                    Discover iconic attractions, desert adventures, hotel stays,
+                    flight bookings, airport transfers and Dubai visa assistance.
+                </p>
+
+                <div class="sc-chips">
+                    <span>30 DAYS TOURIST VISA</span>
+                    <span>60 DAYS TOURIST VISA</span>
+                    <span>FAST PROCESSING</span>
+                </div>
+
+                <a
+                    class="sc-btn sc-btn-orange"
+                    href="https://wa.me/263773905571?text=Hello%20Santos%20Connect%2C%20I%20want%20to%20plan%20a%20Dubai%20trip."
+                    target="_blank"
+                    rel="noopener noreferrer"
+                >
+                    Plan Dubai on WhatsApp
+                </a>
+            </div>
+
+            <div class="sc-promo-image">
+                <img
+                    src="{{ url_for('static', filename='images/dubai-experience.jpg') }}"
+                    alt="Dubai travel experience"
+                    loading="lazy"
+                >
+            </div>
+
+        </div>
+    </section>
+
+
+    <!-- =====================================================
+         4. SERVICES
+         ===================================================== -->
+    <section class="sc-section sc-services" id="services">
+        <div class="sc-wrap">
+
+            <span class="sc-eyebrow">OUR SERVICES</span>
+
+            <h2 class="sc-section-title">
+                One-stop support for your travel needs
+            </h2>
+
+            <p class="sc-section-intro">
+                From your first enquiry to the start of your journey,
+                we help make the process simple and smooth.
+            </p>
+
+            <div class="sc-service-grid">
+
+                {% for icon, title, text in [
+                    ('✈️', 'Flight Tickets', 'Domestic & international flight bookings.'),
+                    ('🛂', 'Visa Services', 'Tourist, visit, business, work and study visa assistance.'),
+                    ('🏨', 'Hotel Reservations', 'Comfortable stays anywhere in the world.'),
+                    ('🧳', 'Tour Packages', 'Customised holiday packages for memorable trips.'),
+                    ('🚐', 'Airport Transfers', 'Reliable airport pickup and drop-off arrangements.'),
+                    ('🛡️', 'Travel Insurance', 'Added protection for your international journey.'),
+                    ('🎓', 'Study Abroad', 'Guidance for UAE, China, Poland and India study routes.'),
+                    ('🌍', 'Relocation to Dubai', 'Visa, flights, accommodation, airport pickup and job-search support.')
+                ] %}
+
+                <article class="sc-service-card">
+                    <span class="sc-service-icon">{{ icon }}</span>
+
+                    <h3>{{ title }}</h3>
+
+                    <p>{{ text }}</p>
+
+                    <a href="{{ url_for('contact') }}">
+                        Enquire →
+                    </a>
+                </article>
+
+                {% endfor %}
+
+            </div>
+
+            <div class="sc-services-action">
+                <a class="sc-btn sc-btn-blue" href="{{ url_for('services') }}">
+                    View All Services
+                </a>
+            </div>
+
+        </div>
+    </section>
+
+
+    <!-- =====================================================
+         5. STUDY ABROAD
+         ===================================================== -->
+    <section class="sc-section sc-study" id="study">
+        <div class="sc-wrap sc-study-grid">
+
+            <div class="sc-study-image">
+                <img
+                    src="{{ url_for('static', filename='images/study-abroad.jpg') }}"
+                    alt="Study abroad opportunities"
+                    loading="lazy"
+                >
+            </div>
+
+            <div class="sc-study-content">
+
+                <span class="sc-eyebrow">STUDY ABROAD</span>
+
+                <h2>Build your future beyond borders.</h2>
+
+                <p>
+                    Explore study opportunities in
+                    <b>UAE, China, Poland and India</b>
+                    with support for university selection, admissions,
+                    scholarships, visa documentation, accommodation and
+                    pre-departure planning.
+                </p>
+
+                <div class="sc-countries">
+                    <span>🇦🇪 UAE</span>
+                    <span>🇨🇳 China</span>
+                    <span>🇵🇱 Poland</span>
+                    <span>🇮🇳 India</span>
+                </div>
+
+                <a class="sc-btn sc-btn-blue" href="{{ url_for('study_abroad') }}">
+                    Explore Study Abroad
+                </a>
+
+            </div>
+
+        </div>
+    </section>
+
+
+    <!-- =====================================================
+         6. WHY CHOOSE US
+         ===================================================== -->
+    <section class="sc-section sc-why" id="why-us">
+        <div class="sc-wrap">
+
+            <span class="sc-eyebrow">WHY CHOOSE SANTOS CONNECT?</span>
+
+            <h2 class="sc-section-title">Move with confidence.</h2>
+
+            <div class="sc-why-grid">
+
+                <article class="sc-why-card">
+                    <b>✓</b>
+                    <h3>Reliable &amp; Trusted</h3>
+                    <p>Clear guidance and practical assistance.</p>
+                </article>
+
+                <article class="sc-why-card">
+                    <b>★</b>
+                    <h3>Expert Guidance</h3>
+                    <p>Support built around your travel goal.</p>
+                </article>
+
+                <article class="sc-why-card">
+                    <b>💰</b>
+                    <h3>Affordable Packages</h3>
+                    <p>Options designed for different needs.</p>
+                </article>
+
+                <article class="sc-why-card">
+                    <b>🌍</b>
+                    <h3>Global Network</h3>
+                    <p>Travel, study and relocation destinations.</p>
+                </article>
+
+                <article class="sc-why-card">
+                    <b>☎</b>
+                    <h3>Client Support</h3>
+                    <p>We're here when you need assistance.</p>
+                </article>
+
+            </div>
+
+        </div>
+    </section>
+
+
+    <!-- =====================================================
+         7. CONTACT
+         ===================================================== -->
+    <section class="sc-section sc-contact" id="contact">
+        <div class="sc-wrap">
+
+            <div class="sc-contact-card">
+
+                <div>
+                    <span class="sc-eyebrow">LET'S CONNECT</span>
+
+                    <h2>Your journey starts here.</h2>
+
+                    <p>
+                        Tell us where you want to go, study, stay or relocate.
+                        Our team is ready to help you plan your next step.
+                    </p>
+                </div>
+
+                <div class="sc-contact-links">
+
+                    <a href="tel:+263773905571">
+                        📞 +263 773 905 571
+                    </a>
+
+                    <a href="tel:+263717671379">
+                        📞 +263 717 671 379
+                    </a>
+
+                    <a href="tel:+971529878571">
+                        📱 +971 52 987 8571
+                    </a>
+
+                    <a
+                        class="sc-wa"
+                        href="https://wa.me/263773905571"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                    >
+                        💬 WhatsApp Us
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+    </section>
+
+
+    <!-- =====================================================
+         STORY VIEWER
+         ===================================================== -->
+    <div class="sc-viewer" id="scViewer" aria-hidden="true">
+
+        <button
+            type="button"
+            class="sc-viewer-close"
+            id="scViewerClose"
+            aria-label="Close story"
+        >
+            ×
+        </button>
+
+        <div class="sc-viewer-content" id="scViewerContent"></div>
+
+    </div>
+
+</div>
+
+
+<!-- =========================================================
+     STORIES JAVASCRIPT
+     Handles image + video stories directly.
+     ========================================================= -->
+<script>
+(function () {
+    const viewer = document.getElementById("scViewer");
+    const viewerContent = document.getElementById("scViewerContent");
+    const closeButton = document.getElementById("scViewerClose");
+
+    if (!viewer || !viewerContent || !closeButton) return;
+
+    function closeViewer() {
+        viewer.classList.remove("is-open");
+        viewer.setAttribute("aria-hidden", "true");
+        viewerContent.innerHTML = "";
+    }
+
+    function openStory(button) {
+        const type = button.dataset.type || "image";
+        const file = button.dataset.file || "";
+        const caption = button.dataset.caption || "Santos Connect";
+
+        if (!file) return;
+
+        viewerContent.innerHTML = "";
+
+        if (type === "video") {
+            const video = document.createElement("video");
+            video.src = file;
+            video.controls = true;
+            video.autoplay = true;
+            video.playsInline = true;
+            viewerContent.appendChild(video);
+        } else {
+            const image = document.createElement("img");
+            image.src = file;
+            image.alt = caption;
+            viewerContent.appendChild(image);
+        }
+
+        const captionElement = document.createElement("div");
+        captionElement.className = "sc-viewer-caption";
+        captionElement.textContent = caption;
+        viewerContent.appendChild(captionElement);
+
+        viewer.classList.add("is-open");
+        viewer.setAttribute("aria-hidden", "false");
+    }
+
+    document.querySelectorAll(".sc-story").forEach(function (button) {
+        button.addEventListener("click", function () {
+            openStory(button);
+        });
+    });
+
+    closeButton.addEventListener("click", closeViewer);
+
+    viewer.addEventListener("click", function (event) {
+        if (event.target === viewer) {
+            closeViewer();
+        }
+    });
+
+    document.addEventListener("keydown", function (event) {
+        if (event.key === "Escape") {
+            closeViewer();
+        }
+    });
+})();
+</script>
+
+{% endblock %}
