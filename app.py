@@ -15,6 +15,7 @@ from flask import (
 )
 
 from werkzeug.utils import secure_filename
+from werkzeug.security import generate_password_hash, check_password_hash
 
 
 BASE = Path(__file__).resolve().parent
@@ -30,12 +31,6 @@ app.secret_key = os.environ.get(
     "SECRET_KEY",
     "change-this-secret-key-before-production"
 )
-
-ADMIN_PASSWORD = os.environ.get(
-    "ADMIN_PASSWORD",
-    "admin123"
-)
-
 
 MAX_IMAGE_BYTES = 2 * 1024 * 1024
 MAX_VIDEO_BYTES = 50 * 1024 * 1024
@@ -74,6 +69,15 @@ def init_db():
             caption TEXT DEFAULT '',
             created_at TEXT NOT NULL,
             expires_at TEXT NOT NULL
+        )
+    """)
+
+    connection.execute("""
+        CREATE TABLE IF NOT EXISTS admin_users (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            username TEXT UNIQUE NOT NULL,
+            password_hash TEXT NOT NULL,
+            created_at TEXT NOT NULL
         )
     """)
 
@@ -221,30 +225,101 @@ def stories_page():
 
 
 
+def admin_account_exists():
+    connection = get_db()
+    row = connection.execute(
+        "SELECT id FROM admin_users LIMIT 1"
+    ).fetchone()
+    connection.close()
+    return row is not None
+
+
+@app.route("/admin/setup", methods=["GET", "POST"])
+def admin_setup():
+    # The setup screen is only available until the first administrator exists.
+    if admin_account_exists():
+        return redirect(url_for("admin_login"))
+
+    if request.method == "POST":
+        username = request.form.get("username", "").strip()
+        password = request.form.get("password", "")
+        confirm = request.form.get("confirm_password", "")
+
+        if len(username) < 3:
+            flash("Username must contain at least 3 characters.")
+            return render_template("admin_setup.html")
+
+        if len(password) < 8:
+            flash("Password must contain at least 8 characters.")
+            return render_template("admin_setup.html")
+
+        if password != confirm:
+            flash("Passwords do not match.")
+            return render_template("admin_setup.html")
+
+        connection = get_db()
+        connection.execute(
+            """
+            INSERT INTO admin_users (username, password_hash, created_at)
+            VALUES (?, ?, ?)
+            """,
+            (
+                username,
+                generate_password_hash(password),
+                now().isoformat()
+            )
+        )
+        connection.commit()
+        connection.close()
+
+        flash("Administrator account created. You can now sign in.")
+        return redirect(url_for("admin_login"))
+
+    return render_template("admin_setup.html")
+
+
 @app.route("/admin/login", methods=["GET", "POST"])
 def admin_login():
 
+    if admin_account_exists() is False:
+        return redirect(url_for("admin_setup"))
+
     if request.method == "POST":
+        username = request.form.get("username", "").strip()
+        password = request.form.get("password", "")
 
-        password = request.form.get("password")
+        connection = get_db()
+        admin_user = connection.execute(
+            """
+            SELECT id, username, password_hash
+            FROM admin_users
+            WHERE username = ?
+            LIMIT 1
+            """,
+            (username,)
+        ).fetchone()
+        connection.close()
 
-        if password == ADMIN_PASSWORD:
-
+        if admin_user and check_password_hash(
+            admin_user["password_hash"],
+            password
+        ):
+            session.clear()
             session["admin"] = True
-
+            session["admin_user_id"] = admin_user["id"]
+            session["admin_username"] = admin_user["username"]
             return redirect(url_for("admin"))
 
-        flash("Incorrect password.")
+        flash("Invalid username or password.")
 
     return render_template("login.html")
 
 
-
-@app.post("/admin/logout")
+@app.route("/admin/logout", methods=["GET", "POST"])
 def admin_logout():
 
     session.clear()
-
+    flash("You have been safely logged out of the Santos Connect admin panel.")
     return redirect(url_for("home"))
 
 
